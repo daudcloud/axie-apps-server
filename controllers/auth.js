@@ -3,11 +3,13 @@ const bcrypt = require("bcrypt");
 
 const login = async (req, res) => {
   try {
-    const user = await User.findOne({ email: req.body.email }).exec();
-    if (!user) return res.json({ message: "something went wrong" });
+    const user = await User.findOne({
+      email: req.body.email.toLowerCase(),
+    }).exec();
     const password = bcrypt.compareSync(req.body.password, user.password);
+    if (!user) return res.json({ message: "something went wrong" });
     if (!password) return res.json({ message: "something went wrong" });
-    return res.status(201).json({ message: "success login" });
+    return res.status(200).json({ message: "success login" });
   } catch (error) {
     console.log(error);
     res.json({ message: "error login" });
@@ -16,7 +18,9 @@ const login = async (req, res) => {
 
 const register = async (req, res) => {
   try {
-    const user = await User.findOne({ email: req.body.email }).exec();
+    const user = await User.findOne({
+      email: req.body.email.toLowerCase(),
+    }).exec();
     if (user) return res.json({ message: "email registered" });
     const hashedPassword = bcrypt.hashSync(req.body.password, 10);
     const instance = new User({
@@ -30,7 +34,7 @@ const register = async (req, res) => {
     return res.status(201).json({ message: "success register" });
   } catch (error) {
     console.log(error);
-    res.json({ message: "error register" });
+    res.json({ message: error.errors });
   }
 };
 
