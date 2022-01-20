@@ -7,16 +7,27 @@ const login = async (req, res) => {
     const user = await User.findOne({
       email: req.body.email.toLowerCase(),
     }).exec();
+    if (!user)
+      return res.json({
+        success: false,
+        message: "invalid email or wrong password",
+      });
+
     const authenticated = bcrypt.compareSync(req.body.password, user.password);
-    if (!user) return res.json({ message: "something went wrong" });
-    if (!authenticated) return res.json({ message: "something went wrong" });
-    _user = {
+    if (!authenticated)
+      return res.json({
+        success: false,
+        message: "invalid email or wrong password",
+      });
+
+    const _user = {
       _id: user._id,
       firstName: user.firstName,
       lastName: user.lastName,
       email: user.email,
       roninAddress: user.roninAddress,
-      isAdmin: user.isAdmin,
+      role: user.role,
+      scholar: user.scholar,
       createdAt: user.createdAt,
       updatedAt: user.updatedAt,
     };
@@ -28,13 +39,13 @@ const login = async (req, res) => {
       { expiresIn: "30m" }
     );
     return res.status(200).json({
-      message: "success login",
-      user: _user,
+      success: true,
+      message: "login successfully",
       token,
     });
   } catch (error) {
     console.log(error);
-    return res.json({ message: "error login" });
+    return res.json({ success: false, message: "error login" });
   }
 };
 
@@ -43,23 +54,25 @@ const register = async (req, res) => {
     const user = await User.findOne({
       email: req.body.email.toLowerCase(),
     }).exec();
-    if (user) return res.json({ message: "email registered" });
-    const hashedPassword = bcrypt.hashSync(
-      req.body.password,
-      process.env.SALT_ROUNDS
-    );
+    if (user)
+      return res.json({ success: false, message: "email already registered" });
+    const hashedPassword = bcrypt.hashSync(req.body.password, 10);
     const instance = new User({
       firstName: req.body.firstName,
       lastName: req.body.lastName,
       email: req.body.email,
       password: hashedPassword,
       roninAddress: req.body.roninAddress,
+      role: req.body.role,
+      scholar: req.body.scholar,
     });
     await instance.save();
-    return res.status(201).json({ message: "success register" });
+    return res
+      .status(201)
+      .json({ success: true, message: "registered successfully" });
   } catch (error) {
     console.log(error);
-    return res.json({ message: error.errors });
+    return res.json({ success: false, message: "error register" });
   }
 };
 

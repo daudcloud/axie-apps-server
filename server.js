@@ -4,6 +4,7 @@ const mongoose = require("mongoose");
 const cors = require("cors");
 const dbConnect = require("./database/database-connect");
 const authRouter = require("./routes/auth");
+const userRouter = require("./routes/user");
 
 const port = process.env.PORT || 8080;
 
@@ -18,6 +19,7 @@ app.get("/", (req, res) => {
   res.json({ message: "Hello World" });
 });
 
-app.use("/api", authRouter);
+app.use("/api/auth", authRouter);
+app.use("/api/user", userRouter);
 
 app.listen(port, () => console.log(`Server running on port ${port}`));

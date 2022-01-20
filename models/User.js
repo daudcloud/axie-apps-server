@@ -35,9 +35,12 @@ const UserSchema = new mongoose.Schema(
       trim: true,
       default: "",
     },
-    isAdmin: {
-      type: Boolean,
-      default: false,
+    role: {
+      type: String,
+      default: "",
+    },
+    scholar: {
+      type: Array,
     },
   },
   { timestamps: true }
