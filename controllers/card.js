@@ -1,10 +1,10 @@
-const User = require("../models/User");
+const Card = require("../models/Card");
 
 const editCard = async (req, res) => {
   try {
     const id = req.params.id;
     const { energy, damage, defense, description } = req.body;
-    await User.findByIdAndUpdate(id, {
+    await Card.findByIdAndUpdate(id, {
       energy,
       damage,
       defense,
