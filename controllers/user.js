@@ -1,12 +1,13 @@
 const User = require("../models/User");
 const bcrypt = require("bcrypt");
+const { findByIdAndDelete } = require("../models/User");
 
 const editUser = async (req, res) => {
   const { _id, firstName, lastName, email, password, roninAddress, scholar } =
     req.body;
   const hashedPassword = bcrypt.hashSync(password, 10);
   try {
-    const user = await User.findByIdAndUpdate(_id, {
+    await User.findByIdAndUpdate(_id, {
       firstName,
       lastName,
       email,
@@ -14,14 +15,20 @@ const editUser = async (req, res) => {
       roninAddress,
       scholar,
     });
-    await user.save();
-    res.json({ success: true, message: "Updated Sucessfully" });
+    res.json({ success: true, message: "Updated Successfully" });
   } catch (error) {
     res.json({ success: false, message: "error updating user" });
   }
 };
 
 const deleteUser = async (req, res) => {
+  try {
+    const id = req.params.id;
+    await User.findByIdAndDelete(id);
+    res.json({ success: true, message: "Deleted Successfully" });
+  } catch (error) {
+    res.json({ success: false, message: "Internal server error" });
+  }
   res.json({ message: "delete success" });
 };
 
