@@ -24,7 +24,6 @@ const login = async (req, res) => {
       _id: user._id,
       firstName: user.firstName,
       lastName: user.lastName,
-      email: user.email,
       roninAddress: user.roninAddress,
       role: user.role,
       scholar: user.scholar,
@@ -44,7 +43,7 @@ const login = async (req, res) => {
       token,
     });
   } catch (error) {
-    console.log(error);
+    // console.log(error);
     return res.json({ success: false, message: "error login" });
   }
 };

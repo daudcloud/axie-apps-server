@@ -27,11 +27,11 @@ const isOwner = (req, res, next) => {
       .json({ success: false, message: "You are not allowed to delete data" });
   const token = req.headers.authorization.split(" ")[1];
   const user = jwt.verify(token, process.env.JWT_SECRET);
-  const isAllowed = user.role === "developer";
+  const isAllowed = user._user.role === "developer";
   if (!isAllowed)
     return res
       .status(401)
-      .json({ success: false, message: "You are not allowed to delete data" });
+      .json({ success: false, message: "You are not allowed to delete datas" });
   next();
 };
 

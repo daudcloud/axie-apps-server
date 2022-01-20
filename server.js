@@ -5,6 +5,7 @@ const cors = require("cors");
 const dbConnect = require("./database/database-connect");
 const authRouter = require("./routes/auth");
 const userRouter = require("./routes/user");
+const cardRouter = require("./routes/card");
 
 const port = process.env.PORT || 8080;
 
@@ -21,5 +22,6 @@ app.get("/", (req, res) => {
 
 app.use("/api/auth", authRouter);
 app.use("/api/user", userRouter);
+app.use("/api/card", cardRouter);
 
 app.listen(port, () => console.log(`Server running on port ${port}`));
