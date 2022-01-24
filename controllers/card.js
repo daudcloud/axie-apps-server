@@ -1,5 +1,14 @@
 const Card = require("../models/Card");
 
+const getCard = async (req, res) => {
+  try {
+    const cards = await Card.find();
+    res.status(200).json({ success: true, data: cards });
+  } catch (error) {
+    res.json({ success: false, message: "Inter server error" });
+  }
+};
+
 const editCard = async (req, res) => {
   try {
     const id = req.params.id;
@@ -15,7 +24,6 @@ const editCard = async (req, res) => {
     console.log(error);
     res.json({ success: false, message: "Internal server error" });
   }
-  res.json({ message: "delete success" });
 };
 
 const addCard = async (req, res) => {
@@ -60,4 +68,4 @@ const addCard = async (req, res) => {
   }
 };
 
-module.exports = { editCard, addCard };
+module.exports = { editCard, addCard, getCard };
