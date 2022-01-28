@@ -2,7 +2,7 @@ const Card = require("../models/Card");
 
 const getCard = async (req, res) => {
   try {
-    const cards = await Card.find();
+    const cards = await Card.find().sort({ classType: 1, partType: 1 });
     res.status(200).json({ success: true, data: cards });
   } catch (error) {
     res.json({ success: false, message: "Inter server error" });
