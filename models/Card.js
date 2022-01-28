@@ -33,31 +33,16 @@ const CardSchema = new mongoose.Schema(
       trim: true,
     },
     damage: {
-      type: String,
-      required: true,
-      trim: true,
-    },
-    backgroundInfo: {
-      type: String,
+      type: Number,
       required: true,
       trim: true,
     },
     defense: {
-      type: String,
+      type: Number,
       required: true,
       trim: true,
     },
     backgroundCard: {
-      type: String,
-      required: true,
-      trim: true,
-    },
-    attackImage: {
-      type: String,
-      required: true,
-      trim: true,
-    },
-    defenseImage: {
       type: String,
       required: true,
       trim: true,

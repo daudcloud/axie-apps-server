@@ -2,7 +2,11 @@ const Card = require("../models/Card");
 
 const getCard = async (req, res) => {
   try {
-    const cards = await Card.find().sort({ classType: 1, partType: 1 });
+    const cards = await Card.find().sort({
+      classType: 1,
+      partType: 1,
+      name: 1,
+    });
     res.status(200).json({ success: true, data: cards });
   } catch (error) {
     res.json({ success: false, message: "Inter server error" });
@@ -28,6 +32,12 @@ const editCard = async (req, res) => {
 
 const addCard = async (req, res) => {
   try {
+    const _card = await Card.find({ part: req.body.part }).exec();
+    if (_card.length !== 0)
+      return res.json({
+        success: false,
+        message: "Duplicated card not allowed",
+      });
     const {
       cardType,
       classType,
@@ -36,11 +46,8 @@ const addCard = async (req, res) => {
       energy,
       name,
       damage,
-      backgroundInfo,
       defense,
       backgroundCard,
-      attackImage,
-      defenseImage,
       effectIcon,
       description,
     } = req.body;
@@ -52,11 +59,8 @@ const addCard = async (req, res) => {
       energy,
       name,
       damage,
-      backgroundInfo,
       defense,
       backgroundCard,
-      attackImage,
-      defenseImage,
       effectIcon,
       description,
     });
