@@ -5,7 +5,6 @@ const getCard = async (req, res) => {
     const cards = await Card.find().sort({
       classType: 1,
       partType: 1,
-      name: 1,
     });
     res.status(200).json({ success: true, data: cards });
   } catch (error) {
@@ -32,7 +31,7 @@ const editCard = async (req, res) => {
 
 const addCard = async (req, res) => {
   try {
-    const _card = await Card.find({ part: req.body.part }).exec();
+    const _card = await Card.find({ name: req.body.name }).exec();
     if (_card.length !== 0)
       return res.json({
         success: false,
