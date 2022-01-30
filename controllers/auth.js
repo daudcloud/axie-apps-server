@@ -62,8 +62,6 @@ const register = async (req, res) => {
       email: req.body.email,
       password: hashedPassword,
       roninAddress: req.body.roninAddress,
-      role: req.body.role,
-      scholar: req.body.scholar,
     });
     await instance.save();
     return res
